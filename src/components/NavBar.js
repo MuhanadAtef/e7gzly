@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "./NavBar.css";
 import logo from "../assets/logo.png";
 import Modal from "react-responsive-modal";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 const usernameMaxLength = 50;
 
 class NavBar extends Component {
@@ -99,12 +101,12 @@ class NavBar extends Component {
         </div>
         {/* Login model */}
         <Modal open={login} onClose={this.onCloseModalclose} center>
-          <div className="modalBody">
+          <div className="modalLoginBody">
             <div className="modelTitle">
               <h2>Login</h2>
             </div>
-            <span className="subtitle">Username:</span>
             <form className="contact-form loginForm">
+              <span className="subtitle">Username:</span>
               <div className="formGroup">
                 <input
                   maxLength={usernameMaxLength}
@@ -138,49 +140,130 @@ class NavBar extends Component {
         {/* <!-- login End -->
                   <!-- sign up --> */}
         <Modal open={sign} onClose={this.onCloseModal} center>
-          <div className="modalBody">
+          <div className="modalSignBody">
             <div className="modelTitle">
               <h2>Sign Up</h2>
             </div>
-            <span className="subtitle">No credit card needed</span>
             <form className="contact-form signForm">
-              <div className="formGroup">
-                <input
-                  maxLength={usernameMaxLength}
-                  className="formInput"
-                  type="text"
-                  name="name"
-                  id="name"
-                  required="true"
-                  autoComplete="off"
-                  aria-required="true"
-                />
+              <div className="container">
+                <div className="row">
+                  <div className="col-md">
+                    <span className="subtitle">Username:</span>
+                    <div className="formGroup">
+                      <input
+                        maxLength={usernameMaxLength}
+                        className="formInput"
+                        type="text"
+                        name="name"
+                        id="name"
+                        required="true"
+                        autoComplete="off"
+                        aria-required="true"
+                      />
+                    </div>
+                    <span className="subtitle">Password:</span>
+                    <div className="formGroup">
+                      <input
+                        type="password"
+                        name="password"
+                        className="formInput"
+                        autoComplete="off"
+                        aria-required="true"
+                        required="true"
+                      />
+                    </div>
+                    <span className="subtitle">Confirm Password:</span>
+                    <div className="formGroup">
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        className="formInput"
+                        autoComplete="off"
+                        aria-required="true"
+                        required="true"
+                      />
+                    </div>
+                    <span className="subtitle">Email Address:</span>
+                    <div className="formGroup">
+                      <input
+                        className="formInput"
+                        type="email"
+                        name="email"
+                        autoComplete="off"
+                        aria-required="true"
+                        required="true"
+                      />
+                    </div>
+                    <span className="subtitle">Gender:</span>
+                    <div>
+                      <input type="radio" name="gender" value='male' required="true"/>
+                      Male
+                      <input type="radio" name="gender" value='female' required="true"/>
+                      Female
+                      <input type="radio" name="gender" value='other' required="true"/>
+                      Other
+                    </div>
+                  </div>
+                  <div className="col-md">
+                    <span className="subtitle">First Name:</span>
+                    <div className="formGroup">
+                      <input
+                        className="formInput"
+                        type="text"
+                        name="firstName"
+                        autoComplete="off"
+                        aria-required="true"
+                        required="true"
+                      />
+                    </div>
+                    <span className="subtitle">Last Name:</span>
+                    <div className="formGroup">
+                      <input
+                        className="formInput"
+                        type="text"
+                        name="lastName"
+                        autoComplete="off"
+                        aria-required="true"
+                        required="true"
+                      />
+                    </div>
+
+                    <span className="subtitle">Address:</span>
+                    <div className="formGroup">
+                      <input
+                        className="formInput"
+                        type="text"
+                        name="address"
+                        autoComplete="off"
+                        aria-required="true"
+                      />
+                    </div>
+                    <span className="subtitle">City:</span>
+                    <div className="formGroup">
+                      <input
+                        className="formInput"
+                        type="select"
+                        name="address"
+                        autoComplete="off"
+                        aria-required="true"
+                      />
+                    </div>
+                    <span className="subtitle">Role:</span>
+                    <div>
+                      <input type="radio" name="role" value='male' required="true"/>
+                      Fan
+                      <input type="radio" name="role" value='female' required="true"/>
+                      Manager
+                    </div>
+                    <input
+                      className="btn btn-md btn-primary btn-center"
+                      id="sign_up"
+                      type="submit"
+                      value="Sign Up"
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="formGroup">
-                <input
-                  className="formInput"
-                  type="text"
-                  name="username"
-                  autoComplete="off"
-                  aria-required="true"
-                />
-              </div>
-              <div className="formGroup">
-                <input
-                  type="password"
-                  name="password"
-                  className="formInput"
-                  placeholder="Password"
-                  autoComplete="off"
-                  aria-required="true"
-                />
-              </div>
-              <input
-                className="btn btn-md btn-primary btn-center"
-                id="sign_up"
-                type="submit"
-                value="Sign Up"
-              />
             </form>
           </div>
         </Modal>

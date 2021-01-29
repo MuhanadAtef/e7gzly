@@ -83,11 +83,15 @@
 
 /****** Modal style ******/
 
-.modalBody .modelTitle h2 {
+.modalLoginBody {
+  width: 300px;
+}
+
+.modalLoginBody .modelTitle h2, .modalSignBody .modelTitle h2 {
     color: darkgray;
 }
 
-.modalBody .subtitle {
+.modalLoginBody .subtitle, .modalSignBody .modelTitle {
   color: darkgray;
 }
 
@@ -123,23 +127,6 @@
 .modal-dialog-center {
   position: relative;
   margin: 30px auto;
-}
-.modal-header .close {
-  margin-top: -2px;
-  outline: none;
-  opacity: 1;
-  color: #fff;
-}
-.videoModal .modal-header {
-  background: #fff;
-}
-.videoModal .modal-content {
-  box-shadow: none;
-  border-radius: 0;
-  border: 0;
-}
-.videoModal .modalBody {
-  padding: 9px 10px;
 }
 
 .btn {
@@ -207,7 +194,7 @@
   background: #ffffff;
   border-style: solid;
   border-width: 1px;
-  width: 265px;
+  width: fit-content;
   border-width: 7px;
   border-radius: 25px;
   border-image: linear-gradient(to right bottom, #00acc1, #015497) 1 20%;
