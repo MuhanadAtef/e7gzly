@@ -4,7 +4,51 @@ import logo from "../assets/logo.png";
 import Modal from "react-responsive-modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const usernameMaxLength = 50;
+const CITIES = [
+  { key: "cairo", value: "Cairo" },
+  { key: "alexandria", value: "Alexandria" },
+  { key: "giza", value: "Giza" },
+  { key: "shubra el-kheima", value: "Shubra El-Kheima" },
+  { key: "port said", value: "Port Said" },
+  { key: "suez", value: "Suez" },
+  { key: "luxor", value: "Luxor" },
+  { key: "al-mansura", value: "Al-Mansura" },
+  { key: "el-mahalla el-kubra", value: "El-Mahalla El-Kubra" },
+  { key: "tanta", value: "Tanta" },
+  { key: "asyut", value: "Asyut" },
+  { key: "ismailia", value: "Ismailia" },
+  { key: "fayyum", value: "Fayyum" },
+  { key: "zagazig", value: "Zagazig" },
+  { key: "aswan", value: "Aswan" },
+  { key: "damietta", value: "Damietta" },
+  { key: "damanhur", value: "Damanhur" },
+  { key: "al-minya", value: "Al-Minya" },
+  { key: "beni suef", value: "Beni Suef" },
+  { key: "qena", value: "Qena" },
+  { key: "sohag", value: "Sohag" },
+  { key: "hurghada", value: "Hurghada" },
+  { key: "6th of october city", value: "6th of October City" },
+  { key: "shibin el kom", value: "Shibin El Kom" },
+  { key: "banha", value: "Banha" },
+  { key: "kafr el-sheikh", value: "Kafr el-Sheikh" },
+  { key: "arish", value: "Arish" },
+  { key: "mallawi", value: "Mallawi" },
+  { key: "10th of ramadan city", value: "10th of Ramadan City" },
+  { key: "bilbais", value: "Bilbais" },
+  { key: "marsa matruh", value: "Marsa Matruh" },
+  { key: "idfu", value: "Idfu" },
+  { key: "mit ghamr", value: "Mit Ghamr" },
+  { key: "al-hamidiyya", value: "Al-Hamidiyya" },
+  { key: "desouk", value: "Desouk" },
+  { key: "qalyub", value: "Qalyub" },
+  { key: "abu kabir", value: "Abu Kabir" },
+  { key: "kafr el-dawwar", value: "Kafr el-Dawwar" },
+  { key: "girga", value: "Girga" },
+  { key: "akhmim", value: "Akhmim" },
+  { key: "matareya", value: "Matareya" },
+];
+CITIES.sort();
+const USERNAME_MAX_LENGTH = 50;
 
 class NavBar extends Component {
   state = {
@@ -14,24 +58,23 @@ class NavBar extends Component {
     login: false,
   };
 
-  onOpenModal = () => {
+  openSignModal = () => {
     this.setState({ sign: true });
     this.setState({ login: false });
   };
 
-  onOpenModalLogin = () => {
+  openLoginModal = () => {
     this.setState({ login: true });
     this.setState({ sign: false });
   };
 
-  onCloseModal = () => {
+  closeSignModal = () => {
     this.setState({ sign: false });
   };
 
-  onCloseModalclose = () => {
+  colseLoginModal = () => {
     this.setState({ login: false });
   };
-  /*
   // Rout to log in page
   logIn = () => {
     console.log("logged in");
@@ -41,20 +84,20 @@ class NavBar extends Component {
   signUp = () => {
     console.log("signed up");
   };
-
   // Rout to sign out page
   signOut = () => {
     console.log("sign out");
   };
-*/
+
+ 
+
   render() {
     const login = this.state.login;
     const sign = this.state.sign;
-    console.log(this.state);
     return (
       <>
-        <div className="Navbar">
-          <div className="leftSide">
+        <div className="nav-bar">
+          <div className="left-side">
             <a href="/">
               <img
                 className="logo"
@@ -66,21 +109,21 @@ class NavBar extends Component {
               <p id="title"> E7GZLY </p>
             </a>
           </div>
-          <div className="rightSide">
+          <div className="right-side">
             <div className="links">
               {this.state.user !== 0 ? (
                 <a href="/"> Profile </a>
               ) : (
                 <div>
                   <button
-                    className="signInUpButtons"
-                    onClick={this.onOpenModalLogin}
+                    className="sign-in-up-buttons"
+                    onClick={this.openLoginModal}
                   >
                     Log In
                   </button>
                   <button
-                    className="signInUpButtons"
-                    onClick={this.onOpenModal}
+                    className="sign-in-up-buttons"
+                    onClick={this.openSignModal}
                   >
                     Sign Up
                   </button>
@@ -92,7 +135,7 @@ class NavBar extends Component {
                 <a href="/"> Approve/Remove Users </a>
               ) : null}
               {this.state.user !== 0 ? (
-                <button className="signInUpButtons" onClick={this.signOut}>
+                <button className="sign-in-up-buttons" onClick={this.signOut}>
                   Sign Out
                 </button>
               ) : null}
@@ -100,32 +143,36 @@ class NavBar extends Component {
           </div>
         </div>
         {/* Login model */}
-        <Modal open={login} onClose={this.onCloseModalclose} center>
-          <div className="modalLoginBody">
-            <div className="modelTitle">
+        <Modal open={login} onClose={this.colseLoginModal} center>
+          <div className="modal-log-in-body">
+            <div className="modal-title">
               <h2>Login</h2>
             </div>
             <form className="contact-form loginForm">
-              <span className="subtitle">Username:</span>
-              <div className="formGroup">
+              <div className="form-group">
+                <label htmlFor="username-login" className="subtitle">
+                  Username:
+                </label>
                 <input
-                  maxLength={usernameMaxLength}
-                  className="formInput"
+                  maxLength={USERNAME_MAX_LENGTH}
+                  className="form-input"
                   type="text"
                   name="username"
-                  required="true"
-                  aria-required="true"
+                  id="username-login"
+                  required={true}
                 />
               </div>
-              <span className="subtitle">Password:</span>
-              <div className="formGroup">
+              <div className="form-group">
+                <label htmlFor="password-login" className="subtitle">
+                  Password:
+                </label>
                 <input
                   type="password"
                   name="password"
-                  required="true"
-                  className="formInput"
+                  id="password-login"
+                  required={true}
+                  className="form-input"
                   autoComplete="off"
-                  aria-required="true"
                 />
               </div>
               <input
@@ -139,131 +186,212 @@ class NavBar extends Component {
         </Modal>
         {/* <!-- login End -->
                   <!-- sign up --> */}
-        <Modal open={sign} onClose={this.onCloseModal} center>
-          <div className="modalSignBody">
-            <div className="modelTitle">
+        <Modal open={sign} onClose={this.closeSignModal} center>
+          <div className="modal-sign-body">
+            <div className="modal-title">
               <h2>Sign Up</h2>
             </div>
-            <form className="contact-form signForm">
+            <form className="contact-form signForm" onSubmit={this.signUp}>
               <div className="container">
                 <div className="row">
                   <div className="col-md">
-                    <span className="subtitle">Username:</span>
-                    <div className="formGroup">
+                    <div className="form-group">
+                      <label htmlFor="username-sign" className="subtitle">
+                        Username:
+                      </label>
                       <input
-                        maxLength={usernameMaxLength}
-                        className="formInput"
+                        maxLength={USERNAME_MAX_LENGTH}
+                        className="form-input"
+                        id="username-sign"
                         type="text"
-                        name="name"
-                        id="name"
-                        required="true"
+                        name="username"
+                        required={true}
                         autoComplete="off"
-                        aria-required="true"
                       />
                     </div>
-                    <span className="subtitle">Password:</span>
-                    <div className="formGroup">
+                    <div className="form-group">
+                      <label htmlFor="password-sign" className="subtitle">
+                        Password:
+                      </label>
                       <input
                         type="password"
                         name="password"
-                        className="formInput"
+                        id="password-sign"
+                        className="form-input"
                         autoComplete="off"
-                        aria-required="true"
-                        required="true"
+                        required={true}
                       />
                     </div>
-                    <span className="subtitle">Confirm Password:</span>
-                    <div className="formGroup">
+                    <div className="form-group">
+                      <label htmlFor="confirm-password" className="subtitle">
+                        Confirm Password:
+                      </label>
                       <input
                         type="password"
                         name="confirmPassword"
-                        className="formInput"
+                        id="confirm-password"
+                        className="form-input"
                         autoComplete="off"
-                        aria-required="true"
-                        required="true"
+                        aria-required={true}
+                        required={true}
                       />
                     </div>
-                    <span className="subtitle">Email Address:</span>
-                    <div className="formGroup">
+                    <div className="form-group">
+                      <label htmlFor="email" className="subtitle">
+                        Email Address:
+                      </label>
                       <input
-                        className="formInput"
+                        className="form-input"
                         type="email"
                         name="email"
+                        id="email"
                         autoComplete="off"
-                        aria-required="true"
-                        required="true"
+                        required={true}
                       />
                     </div>
-                    <span className="subtitle">Gender:</span>
-                    <div>
-                      <input type="radio" name="gender" value='male' required="true"/>
-                      Male
-                      <input type="radio" name="gender" value='female' required="true"/>
-                      Female
-                      <input type="radio" name="gender" value='other' required="true"/>
-                      Other
+                    <div className="form-group">
+                      <label htmlFor="birth" className="subtitle">Birth Date:</label>
+                      <input
+                        className="form-input"
+                        type="date"
+                        id="date-input"
+                        name="birth"
+                        required={true}
+                        min="1900-01-01"
+                      ></input>
+                    </div>
+                    <label htmlFor="gender-radio" className="subtitle">
+                      Gender:
+                    </label>
+                    <br></br>
+                    <div id="htmlFor" className="form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        id="male-radio"
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        required={true}
+                      />
+                      <label className="form-check-label" htmlFor="male-radio">
+                        Male
+                      </label>
+                      <input
+                        className="form-check-input"
+                        id="female-radio"
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        required={true}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="female-radio"
+                      >
+                        Female
+                      </label>
+                      <input
+                        className="form-check-input"
+                        id="other-radio"
+                        type="radio"
+                        name="gender"
+                        value="other"
+                        required={true}
+                      />
+                      <label className="form-check-label" htmlFor="other-radio">
+                        Other
+                      </label>
                     </div>
                   </div>
+                  <div className="vl"></div>
                   <div className="col-md">
-                    <span className="subtitle">First Name:</span>
-                    <div className="formGroup">
+                    <div className="form-group">
+                      <label htmlFor="first-name" className="subtitle">
+                        First Name:
+                      </label>
                       <input
-                        className="formInput"
+                        className="form-input"
                         type="text"
                         name="firstName"
+                        id="first-name"
                         autoComplete="off"
-                        aria-required="true"
-                        required="true"
+                        required={true}
                       />
                     </div>
-                    <span className="subtitle">Last Name:</span>
-                    <div className="formGroup">
+                    <div className="form-group">
+                      <label htmlFor="last-name" className="subtitle">
+                        Last Name:
+                      </label>
                       <input
-                        className="formInput"
+                        className="form-input"
+                        id="last-name"
                         type="text"
                         name="lastName"
                         autoComplete="off"
-                        aria-required="true"
-                        required="true"
+                        required={true}
                       />
                     </div>
-
-                    <span className="subtitle">Address:</span>
-                    <div className="formGroup">
+                    <div className="form-group">
+                      <label htmlFor="address" className="subtitle">Address:</label>
                       <input
-                        className="formInput"
+                        className="form-input"
                         type="text"
                         name="address"
+                        id="address"
                         autoComplete="off"
-                        aria-required="true"
+                        aria-required={true}
                       />
                     </div>
-                    <span className="subtitle">City:</span>
-                    <div className="formGroup">
+                    <div className="form-group">
+                    <label htmlFor="city" className="subtitle">City:</label>
+                      <select name="city" id="city" className="form-input">
+                        {CITIES.map(city => (
+                          <option key={city.key} value={city.key}>
+                            {city.value}
+                          </option>
+                        ))}
+                        ;
+                      </select>
+                    </div>
+                    <label htmlFor="role-radio" className="subtitle">Role:</label>
+                    <br></br>
+                    <div className="form-check form-check-inline" id="role-radio">
                       <input
-                        className="formInput"
-                        type="select"
-                        name="address"
-                        autoComplete="off"
-                        aria-required="true"
+                        className="form-check-input"
+                        id="fan-radio"
+                        type="radio"
+                        name="role"
+                        value="fan"
+                        required={true}
                       />
+                      <label className="form-check-label" htmlFor="fan-radio">
+                        Fan
+                      </label>
+                      <input
+                        className="form-check-input"
+                        id="manager-radio"
+                        type="radio"
+                        name="role"
+                        value="manager"
+                        required={true}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="manager-radio"
+                      >
+                        Manager
+                      </label>
                     </div>
-                    <span className="subtitle">Role:</span>
-                    <div>
-                      <input type="radio" name="role" value='male' required="true"/>
-                      Fan
-                      <input type="radio" name="role" value='female' required="true"/>
-                      Manager
-                    </div>
-                    <input
-                      className="btn btn-md btn-primary btn-center"
-                      id="sign_up"
-                      type="submit"
-                      value="Sign Up"
-                    />
                   </div>
                 </div>
               </div>
+              <br></br>
+              <input
+                className="btn btn-md btn-primary btn-center"
+                id="sign_up"
+                type="submit"
+                value="Sign Up"
+              />
             </form>
           </div>
         </Modal>
