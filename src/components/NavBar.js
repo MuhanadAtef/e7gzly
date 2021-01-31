@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./NavBar.css";
 import logo from "../assets/logo.png";
 import Modal from "react-responsive-modal";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 const CITIES = [
   { key: "cairo", value: "Cairo" },
@@ -47,7 +47,6 @@ const CITIES = [
   { key: "akhmim", value: "Akhmim" },
   { key: "matareya", value: "Matareya" },
 ];
-CITIES.sort();
 const USERNAME_MAX_LENGTH = 50;
 
 class NavBar extends Component {
@@ -57,6 +56,7 @@ class NavBar extends Component {
     sign: false,
     login: false,
   };
+
 
   openSignModal = () => {
     this.setState({ sign: true });
@@ -89,8 +89,6 @@ class NavBar extends Component {
     console.log("sign out");
   };
 
- 
-
   render() {
     const login = this.state.login;
     const sign = this.state.sign;
@@ -103,7 +101,6 @@ class NavBar extends Component {
                 className="logo"
                 src={logo}
                 alt="logo"
-                width="60px"
                 height="60px"
               ></img>
               <p id="title"> E7GZLY </p>
