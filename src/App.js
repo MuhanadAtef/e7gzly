@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import MatchCard from "./components/MatchCard"
+import Home from "./components/Home"
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <MatchCard />
+        <Home />
       </div>
     );
   }

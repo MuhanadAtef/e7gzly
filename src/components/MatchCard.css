@@ -6,6 +6,7 @@
     vertical-align: middle;
     color: white;
     cursor: pointer;
+    z-index: 0;
 }
 .match-card-row {
     text-align: center;

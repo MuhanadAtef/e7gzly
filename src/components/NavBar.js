@@ -145,7 +145,7 @@ class NavBar extends Component {
             <div className="modal-title">
               <h2>Login</h2>
             </div>
-            <form className="contact-form loginForm">
+            <form className="contact-form loginForm" onSubmit={this.logIn}>
               <div className="form-group">
                 <label htmlFor="username-login" className="subtitle">
                   Username:
