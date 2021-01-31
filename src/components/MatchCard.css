@@ -5,14 +5,15 @@
     border-radius: 10px;
     vertical-align: middle;
     color: white;
+    cursor: pointer;
 }
 .match-card-row {
     text-align: center;
     align-items: center;
-
 }
 
 .small-text {
+    cursor: pointer;
     display: block;
     font-size: 12px;
     margin: 0;
@@ -20,8 +21,32 @@
 }
 
 .team-name {
+    cursor: pointer;
     display: block;
     font-size: 12px;
     margin-top: 5px;
     text-transform: capitalize;
+}
+
+#edit-btn {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+#edit-btn:hover {
+    color: #21c9df;
+}
+
+#delete-btn {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+#delete-btn:hover {
+    color: red;
+}
+
+.edit-delete {
+    margin-top: 5px;
+    text-align: center;
 }
