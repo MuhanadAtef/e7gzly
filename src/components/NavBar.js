@@ -74,12 +74,10 @@ class NavBar extends Component {
 
   openSignModal = () => {
     this.setState({ sign: true });
-    this.setState({ login: false });
   };
 
   openLoginModal = () => {
     this.setState({ login: true });
-    this.setState({ sign: false });
   };
 
   closeSignModal = () => {
@@ -107,7 +105,8 @@ class NavBar extends Component {
       registrationInfo: {
         username: e.target.username.value,
         password: e.target.password.value,
-        firstName: e.target.confirmPassword.value,
+        confirmPassword: e.target.confirmPassword.value,
+        firstName: e.target.firstName.value,
         lastName: e.target.lastName.value,
         birthDate: e.target.birthDate.value,
         gender: e.target.gender.value,
@@ -117,6 +116,16 @@ class NavBar extends Component {
         role: e.target.role.value,
       }
     }, () => {
+      var birthDate = new Date(this.state.registrationInfo.birthDate)
+      var currentDate = new Date()
+      var age = new Date(currentDate - birthDate).getFullYear()
+      console.log(age)
+      if (this.state.registrationInfo.password !== this.state.registrationInfo.confirmPassword) {
+        alert("Password and confirm password doesn't match")
+      }
+      else if ((age-1970) < 16) {
+        alert("You must be +16 to create an account")
+      }  
       console.log(this.state.registrationInfo)
     })
   };
@@ -131,6 +140,13 @@ class NavBar extends Component {
       this.setState({isPasswordMatch: false})
     }
     else {
+      this.setState({isPasswordMatch: true})
+    }
+  }
+
+  // To check if password and confirm password match or not
+  checkPassword = (e) => {
+    if(e.target.value === document.getElementById("sign-form")["confirmPassword"].value) {
       this.setState({isPasswordMatch: true})
     }
   }
@@ -256,6 +272,7 @@ class NavBar extends Component {
                         name="password"
                         id="password-sign"
                         className="form-input"
+                        onChange={this.checkPassword}
                         autoComplete="off"
                         required={true}
                       />
