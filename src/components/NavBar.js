@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./NavBar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/logo.png";
 import Modal from "react-responsive-modal";
 import "bootstrap/dist/css/bootstrap.css";
@@ -52,11 +54,23 @@ const USERNAME_MAX_LENGTH = 50;
 class NavBar extends Component {
   state = {
     user: 0, // 0 for Guest, 1 for Customer, 2 for EFA manager, 4 for Adminstrator
-    username: "Muhanad",
-    sign: false,
-    login: false,
+    isPasswordMatch: true, // To check for password and confirm password match or not in sign up modal
+    registrationInfo: {  // Info for registration
+      username: null,
+      password: null,
+      firstName: null,
+      lastName: null,
+      birthDate: null,
+      gender: null,
+      city: null,
+      address: null,
+      email: null,
+      role: null,
+    },
+    loginInfo: {username: null, password: null},
+    sign: false,  // Open sign up modal
+    login: false, // Open login modal
   };
-
 
   openSignModal = () => {
     this.setState({ sign: true });
@@ -75,19 +89,51 @@ class NavBar extends Component {
   colseLoginModal = () => {
     this.setState({ login: false });
   };
-  // Rout to log in page
-  logIn = () => {
-    console.log("logged in");
+  // Route to log in page
+  logIn = (e) => {
+    e.preventDefault();
+    this.setState({
+      loginInfo: {username: e.target.username.value, password: e.target.password.value}
+    }, () => {
+      console.log(this.state.loginInfo)
+    })
   };
 
-  // Rout to sign up page
-  signUp = () => {
-    console.log("signed up");
+  // Route to sign up page
+  signUp = (e) => {
+    e.preventDefault();
+    console.log(e.target.username.value)
+    this.setState({
+      registrationInfo: {
+        username: e.target.username.value,
+        password: e.target.password.value,
+        firstName: e.target.confirmPassword.value,
+        lastName: e.target.lastName.value,
+        birthDate: e.target.birthDate.value,
+        gender: e.target.gender.value,
+        city: e.target.city.value,
+        address: e.target.address.value,
+        email: e.target.email.value,
+        role: e.target.role.value,
+      }
+    }, () => {
+      console.log(this.state.registrationInfo)
+    })
   };
   // Rout to sign out page
   signOut = () => {
     console.log("sign out");
   };
+
+  // To check if password and confirm password match or not
+  checkConfirmPassword = (e) => {
+    if(e.target.value !== document.getElementById("sign-form")["password"].value) {
+      this.setState({isPasswordMatch: false})
+    }
+    else {
+      this.setState({isPasswordMatch: true})
+    }
+  }
 
   render() {
     const login = this.state.login;
@@ -97,12 +143,7 @@ class NavBar extends Component {
         <div className="nav-bar">
           <div className="left-side">
             <a href="/">
-              <img
-                className="logo"
-                src={logo}
-                alt="logo"
-                height="60px"
-              ></img>
+              <img className="logo" src={logo} alt="logo" height="60px"></img>
               <p id="title"> E7GZLY </p>
             </a>
           </div>
@@ -145,7 +186,7 @@ class NavBar extends Component {
             <div className="modal-title">
               <h2>Login</h2>
             </div>
-            <form className="contact-form loginForm" onSubmit={this.logIn}>
+            <form className="contact-form login-form" onSubmit={this.logIn}>
               <div className="form-group">
                 <label htmlFor="username-login" className="subtitle">
                   Username:
@@ -188,7 +229,7 @@ class NavBar extends Component {
             <div className="modal-title">
               <h2>Sign Up</h2>
             </div>
-            <form className="contact-form signForm" onSubmit={this.signUp}>
+            <form className="contact-form sign-form" id="sign-form" onSubmit={this.signUp}>
               <div className="container">
                 <div className="row">
                   <div className="col-md">
@@ -228,10 +269,12 @@ class NavBar extends Component {
                         name="confirmPassword"
                         id="confirm-password"
                         className="form-input"
+                        onChange={this.checkConfirmPassword}
                         autoComplete="off"
                         aria-required={true}
                         required={true}
                       />
+                      {this.state.isPasswordMatch ? null : <p id="password-error-msg"> <FontAwesomeIcon icon={faTimesCircle} size="xs"/> password does not match</p>}
                     </div>
                     <div className="form-group">
                       <label htmlFor="email" className="subtitle">
@@ -247,12 +290,14 @@ class NavBar extends Component {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="birth" className="subtitle">Birth Date:</label>
+                      <label htmlFor="birth" className="subtitle">
+                        Birth Date:
+                      </label>
                       <input
                         className="form-input"
                         type="date"
                         id="date-input"
-                        name="birth"
+                        name="birthDate"
                         required={true}
                         min="1900-01-01"
                       ></input>
@@ -329,7 +374,9 @@ class NavBar extends Component {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="address" className="subtitle">Address:</label>
+                      <label htmlFor="address" className="subtitle">
+                        Address:
+                      </label>
                       <input
                         className="form-input"
                         type="text"
@@ -340,7 +387,9 @@ class NavBar extends Component {
                       />
                     </div>
                     <div className="form-group">
-                    <label htmlFor="city" className="subtitle">City:</label>
+                      <label htmlFor="city" className="subtitle">
+                        City:
+                      </label>
                       <select name="city" id="city" className="form-input">
                         {CITIES.map(city => (
                           <option key={city.key} value={city.key}>
@@ -350,9 +399,14 @@ class NavBar extends Component {
                         ;
                       </select>
                     </div>
-                    <label htmlFor="role-radio" className="subtitle">Role:</label>
+                    <label htmlFor="role-radio" className="subtitle">
+                      Role:
+                    </label>
                     <br></br>
-                    <div className="form-check form-check-inline" id="role-radio">
+                    <div
+                      className="form-check form-check-inline"
+                      id="role-radio"
+                    >
                       <input
                         className="form-check-input"
                         id="fan-radio"
