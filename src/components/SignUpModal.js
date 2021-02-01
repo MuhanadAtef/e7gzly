@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-responsive-modal";
 import "bootstrap/dist/css/bootstrap.css";
-import "./NavBar.css";
+import "./ModalStyle.css";
 
 const CITIES = [
   { key: "cairo", value: "Cairo" },
@@ -143,7 +143,7 @@ class SignUpModal extends Component {
                 <div className="col-md">
                   <div className="form-group">
                     <label htmlFor="username-sign" className="subtitle">
-                      Username:
+                      Username*:
                     </label>
                     <input
                       maxLength={this.props.maxUserNameLength}
@@ -157,7 +157,7 @@ class SignUpModal extends Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="password-sign" className="subtitle">
-                      Password:
+                      Password*:
                     </label>
                     <input
                       type="password"
@@ -171,7 +171,7 @@ class SignUpModal extends Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="confirm-password" className="subtitle">
-                      Confirm Password:
+                      Confirm Password*:
                     </label>
                     <input
                       type="password"
@@ -193,7 +193,7 @@ class SignUpModal extends Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="email" className="subtitle">
-                      Email Address:
+                      Email Address*:
                     </label>
                     <input
                       className="form-input"
@@ -206,7 +206,7 @@ class SignUpModal extends Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="birth" className="subtitle">
-                      Birth Date:
+                      Birth Date*:
                     </label>
                     <input
                       className="form-input"
@@ -218,7 +218,7 @@ class SignUpModal extends Component {
                     ></input>
                   </div>
                   <label htmlFor="gender-radio" className="subtitle">
-                    Gender:
+                    Gender*:
                   </label>
                   <br></br>
                   <div id="htmlFor" className="form-check form-check-inline">
@@ -261,7 +261,7 @@ class SignUpModal extends Component {
                 <div className="col-md">
                   <div className="form-group">
                     <label htmlFor="first-name" className="subtitle">
-                      First Name:
+                      First Name*:
                     </label>
                     <input
                       className="form-input"
@@ -274,7 +274,7 @@ class SignUpModal extends Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="last-name" className="subtitle">
-                      Last Name:
+                      Last Name*:
                     </label>
                     <input
                       className="form-input"
@@ -300,7 +300,7 @@ class SignUpModal extends Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="city" className="subtitle">
-                      City:
+                      City*:
                     </label>
                     <select name="city" id="city" className="form-input">
                       {CITIES.map(city => (
@@ -312,7 +312,7 @@ class SignUpModal extends Component {
                     </select>
                   </div>
                   <label htmlFor="role-radio" className="subtitle">
-                    Role:
+                    Role*:
                   </label>
                   <br></br>
                   <div className="form-check form-check-inline" id="role-radio">

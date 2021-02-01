@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./NavBar.css";
+import "./ModalStyle.css";
 import Modal from "react-responsive-modal";
 import "bootstrap/dist/css/bootstrap.css";
 
