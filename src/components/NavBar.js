@@ -47,10 +47,11 @@ class NavBar extends Component {
           </div>
           <div className="right-side">
             <div className="links">
+              <a href="/"> Home </a>
               {this.state.user !== 0 ? (
                 <a href="/"> Profile </a>
               ) : (
-                <div>
+                <>
                   <button
                     className="sign-in-up-buttons"
                     onClick={this.openLoginModal}
@@ -63,7 +64,7 @@ class NavBar extends Component {
                   >
                     Sign Up
                   </button>
-                </div>
+                </>
               )}
               {this.state.user === 2 ? <a href="/"> Add New Match </a> : null}
               {this.state.user === 2 ? <a href="/"> Add New Stadium </a> : null}
