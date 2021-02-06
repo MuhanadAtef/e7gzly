@@ -36,6 +36,7 @@ class Home extends Component {
             time: date,
             home: matchesArray[i].home_team,
             away: matchesArray[i].away_team,
+            stadium: matchesArray[i].match_venue,
             referee: matchesArray[i].referee,
             lineman1: matchesArray[i].linesmen[0],
             lineman2: matchesArray[i].linesmen[1]

@@ -69,7 +69,7 @@ class MatchCard extends Component {
                 <label className="small-text">{dateTime[0]}</label>
                 <label className="small-text">{dateTime[1]}</label>
                 <br />
-                <h5>Borg Al Arab</h5>
+                <h5>{this.props.match.stadium}</h5>
                 <br />
                 <label className="small-text"><FontAwesomeIcon icon={faMale} size="1x" /> {this.props.match.referee}</label>
                 <label className="small-text"><FontAwesomeIcon icon={faFlagCheckered} size="1x" /> {this.props.match.lineman1}, {this.props.match.lineman2}</label>
