@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { unAuthaxios } from "./AxiosConfig";
 import "./ModalStyle.css";
 import Modal from "react-responsive-modal";
 import "bootstrap/dist/css/bootstrap.css";
@@ -10,18 +11,46 @@ class LoginModal extends Component {
   };
 
   // Route to log in page
-  logIn = (e) => {
+  logIn = e => {
     e.preventDefault();
-    this.setState({
-      loginInfo: {username: e.target.username.value, password: e.target.password.value}
-    }, () => {
-      console.log(this.state.loginInfo)
-    })
+    this.setState(
+      {
+        loginInfo: {
+          username: e.target.username.value,
+          password: e.target.password.value,
+        },
+      },
+      () => {
+        unAuthaxios.post("/account/login/", {
+            username: e.target.username.value,
+            password: e.target.password.value
+          })
+          .then(response => {
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("role", response.data.role);
+            window.location.reload();
+          })
+          .catch(error => {
+            var errorData = error.response.data;
+            var errorMsg = "";
+            for (var key in errorData) {
+              if (errorData.hasOwnProperty(key)) {
+                errorMsg += key + ": " + errorData[key] + "\n";
+              }
+            }
+            alert(errorMsg);
+          });
+      }
+    );
   };
 
   render() {
     return (
-      <Modal open={this.props.openLoginModal} onClose={this.props.colseLoginModal} center>
+      <Modal
+        open={this.props.openLoginModal}
+        onClose={this.props.colseLoginModal}
+        center
+      >
         <div className="modal-log-in-body">
           <div className="modal-title">
             <h2>Login</h2>

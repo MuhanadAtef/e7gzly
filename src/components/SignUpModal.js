@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { unAuthaxios } from "./AxiosConfig";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-responsive-modal";
@@ -99,8 +99,7 @@ class SignUpModal extends Component {
         } else if (age - 1970 < 16) {
           alert("You must be (+16) to create an account");
         } else {
-          axios
-            .post("/account/registration/", {
+          unAuthaxios.post("/account/registration/", {
               username: e.target.username.value,
               email: e.target.email.value,
               password: e.target.password.value,
@@ -116,6 +115,7 @@ class SignUpModal extends Component {
             .then(response => {
               localStorage.setItem('token', response.data.token)
               localStorage.setItem('role', response.data.role)
+              window.location.reload();
             })
             .catch(error => {
               var errorData = error.response.data;

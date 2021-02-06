@@ -34,17 +34,6 @@ const TEAMS = {
 };
 
 class MatchCard extends Component {
-  state = {
-    user: 0, // 0 for Guest, 1 for Customer, 2 for EFA manager, 4 for Adminstrator
-    id: 5,
-    time: "2021-05-21 21:15:00",
-    home: "al ahly sc",
-    away: "el gouna fc",
-    referee: "reda abo sree3",
-    lineman1: "Haredy",
-    lineman2: "Abd Elrheem",
-  };
-
   deleteMatch = (e) => {
       e.stopPropagation();
       var x = window.confirm("Are you sure you want to delete this match?");
@@ -60,7 +49,9 @@ class MatchCard extends Component {
     console.log("Edit Match");
   }
 
+
   render() {
+    const user = localStorage.getItem('role') !== null ? localStorage.getItem('role') : 'guest' // Get the user role
     var dateTime = this.props.match.time.split(" ");
     var homeTeam = TEAMS[this.props.match.home];
     var awayTeam = TEAMS[this.props.match.away];
@@ -87,7 +78,7 @@ class MatchCard extends Component {
                 <img src={awayTeam} alt="Away Team" height="70px"></img>
                 <label className="team-name">{this.props.match.away}</label>
               </div>
-              {this.state.user === 2 ? <div className="col-2 edit-delete">
+              {user === 'manager' ? <div className="col-2 edit-delete">
               <FontAwesomeIcon id="edit-btn" icon={faEdit} size="1x" title="Edit" onClick={this.editMatch}/>
               <FontAwesomeIcon id="delete-btn" icon={faTrashAlt} size="1x" title="Delete" onClick={this.deleteMatch}/>
               </div> : null}

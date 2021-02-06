@@ -8,7 +8,6 @@ const USERNAME_MAX_LENGTH = 50;
 
 class NavBar extends Component {
   state = {
-    user: 'guest', // guest, fan, manager, admin
     sign: false,  // Open sign up modal
     login: false, // Open login modal
   };
@@ -30,15 +29,13 @@ class NavBar extends Component {
   };
  
   signOut = () => {
-    console.log("sign out");
+    localStorage.clear()
+    window.location.href = '/'
   };
 
-  constructor(props) {
-    super(props)
-    this.setState({user: localStorage.getItem('role') !== null ? localStorage.getItem('role') : 'guest'})
-  }
-
+  
   render() {
+    const user = localStorage.getItem('role') !== null ? localStorage.getItem('role') : 'guest' // Get the user role
     const login = this.state.login;
     const sign = this.state.sign;
     return (
@@ -53,7 +50,7 @@ class NavBar extends Component {
           <div className="right-side">
             <div className="links">
               <a href="/"> Home </a>
-              {this.state.user !== 0 ? (
+              {user !== 'guest' ? (
                 <a href="/"> Profile </a>
               ) : (
                 <>
@@ -71,12 +68,12 @@ class NavBar extends Component {
                   </button>
                 </>
               )}
-              {this.state.user === 2 ? <a href="/"> Add New Match </a> : null}
-              {this.state.user === 2 ? <a href="/"> Add New Stadium </a> : null}
-              {this.state.user === 4 ? (
+              {user === 'manager' ? <a href="/"> Add New Match </a> : null}
+              {user === 'manager' ? <a href="/"> Add New Stadium </a> : null}
+              {user === 'admin' ? (
                 <a href="/"> Approve/Remove Users </a>
               ) : null}
-              {this.state.user !== 0 ? (
+              {user !== 'guest' ? (
                 <button className="sign-in-up-buttons" onClick={this.signOut}>
                   Sign Out
                 </button>
