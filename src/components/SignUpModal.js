@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { unAuthaxios } from "./AxiosConfig";
+import { unAuthAxios } from "./AxiosConfig";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-responsive-modal";
@@ -99,7 +99,7 @@ class SignUpModal extends Component {
         } else if (age - 1970 < 16) {
           alert("You must be (+16) to create an account");
         } else {
-          unAuthaxios.post("/account/registration/", {
+          unAuthAxios.post("/account/registration/", {
               username: e.target.username.value,
               email: e.target.email.value,
               password: e.target.password.value,

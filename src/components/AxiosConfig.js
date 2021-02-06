@@ -4,7 +4,7 @@ const token = localStorage.getItem("token");
 const apiUrl = "http://39374edc3912.ngrok.io/";
 
 // For non-authorized requests
-const unAuthaxios = axios.create({
+const unAuthAxios = axios.create({
   baseURL: apiUrl
 });
 
@@ -17,4 +17,4 @@ const authAxios = axios.create({
 });
 
 export { authAxios };
-export { unAuthaxios };
+export { unAuthAxios };

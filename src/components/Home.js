@@ -1,90 +1,77 @@
 import React, { Component } from "react";
+import { unAuthAxios } from "./AxiosConfig";
 import MatchCard from "./MatchCard";
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from "react-infinite-scroll-component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import "./Home.css";
 
 class Home extends Component {
   state = {
-    requestMatchNumber: 0,
+    pageNumber: 1,
+    resultsPerPage: 10,
     hasMore: true,
-    matches: [
-      {
-        id: 1,
-        time: "2021-05-21 21:15:00",
-        home: "al ahly sc",
-        away: "el gouna fc",
-        referee: "reda abo sree3",
-        lineman1: "Haredy",
-        lineman2: "Abd Elrheem",
-      },
-      {
-        id: 2,
-        time: "2021-05-21 21:15:00",
-        home: "zamalek sc",
-        away: "smouha sc",
-        referee: "reda abo sree3",
-        lineman1: "Haredy",
-        lineman2: "Abd Elrheem",
-      },
-      {
-        id: 3,
-        time: "2021-05-21 21:15:00",
-        home: "al masry sc",
-        away: "enppi sc",
-        referee: "reda abo sree3",
-        lineman1: "Haredy",
-        lineman2: "Abd Elrheem",
-      },
-      {
-        id: 4,
-        time: "2021-05-21 21:15:00",
-        home: "tala'ea el gaish sc",
-        away: "al mokawloon al arab sc",
-        referee: "reda abo sree3",
-        lineman1: "Haredy",
-        lineman2: "Abd Elrheem",
-      },
-    ],
+    matches: [],
   };
 
   fetchData = () => {
-    if (this.state.matches.length >= 20) {
-        this.setState({hasMore: false})
-        return
-    }
-    var matches = []
-    for (var i=0; i<4; i++) {
-        var match = {
-            id: Math.random(),
-            time: "2021-05-21 21:15:00",
-            home: "tala'ea el gaish sc",
-            away: "al mokawloon al arab sc",
-            referee: "reda abo sree3",
-            lineman1: "Haredy",
-            lineman2: "Abd Elrheem",
+    unAuthAxios
+      .get("/matches/", {
+        params: {
+          matches_per_page: this.state.resultsPerPage,
+          page_number: this.state.pageNumber,
+        },
+      })
+      .then(response => {
+        var matchesArray = JSON.parse(JSON.stringify(response.data));
+        if (matchesArray.length < this.state.resultsPerPage) {
+          this.setState({ hasMore: false });
         }
-        matches.push(match)
-    }
-    this.setState({ 
-        matches: this.state.matches.concat(matches)
-      })    
+        var matches = [];
+        for (var i = 0; i < matchesArray.length; i++) {
+          var date = matchesArray[i].date.replace('Z','')
+          date = date.replace('T',' ')
+          var match = {
+            id: matchesArray[i].match_id,
+            time: date,
+            home: matchesArray[i].home_team,
+            away: matchesArray[i].away_team,
+            referee: matchesArray[i].referee,
+            lineman1: matchesArray[i].linesmen[0],
+            lineman2: matchesArray[i].linesmen[1]
+          };
+          matches.push(match);
+        }
+        var nextPageNumber = this.state.pageNumber + 1
+        this.setState({
+          matches: this.state.matches.concat(matches),
+          pageNumber: nextPageNumber
+        });
+      });
+  };
+
+  componentDidMount() {
+    this.fetchData();
   }
 
   render() {
     return (
-        <InfiniteScroll
-            className="home-page"
-            dataLength={this.state.matches.length} //This is important field to render the next data
-            next={this.fetchData}
-            hasMore={this.state.hasMore}
-            loader={<FontAwesomeIcon id="loading-icon" icon={faSpinner} spin/>}
-            endMessage={<h3 id="no-more-matches" style={{marginTop: '25px'}}> No more matches posted yet !!!</h3>}
-        >
-            {this.state.matches.map(match => {
-            return <MatchCard key={match.id} match={match} />;
-            })}
+      <InfiniteScroll
+        className="home-page"
+        dataLength={this.state.matches.length} //This is important field to render the next data
+        next={this.fetchData}
+        hasMore={this.state.hasMore}
+        loader={<FontAwesomeIcon id="loading-icon" icon={faSpinner} spin />}
+        endMessage={
+          <h3 id="no-more-matches" style={{ marginTop: "25px" }}>
+            {" "}
+            No more matches posted yet !!!
+          </h3>
+        }
+      >
+        {this.state.matches.map(match => {
+          return <MatchCard key={match.id} match={match} />;
+        })}
       </InfiniteScroll>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { unAuthaxios } from "./AxiosConfig";
+import { unAuthAxios } from "./AxiosConfig";
 import "./ModalStyle.css";
 import Modal from "react-responsive-modal";
 import "bootstrap/dist/css/bootstrap.css";
@@ -21,7 +21,7 @@ class LoginModal extends Component {
         },
       },
       () => {
-        unAuthaxios.post("/account/login/", {
+        unAuthAxios.post("/account/login/", {
             username: e.target.username.value,
             password: e.target.password.value
           })

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// eslint-disable-next-line no-unused-vars
 import { faFlagCheckered, faMale, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.css";
 import "./MatchCard.css";
@@ -78,9 +79,9 @@ class MatchCard extends Component {
                 <img src={awayTeam} alt="Away Team" height="70px"></img>
                 <label className="team-name">{this.props.match.away}</label>
               </div>
-              {user === 'manager' ? <div className="col-2 edit-delete">
+              {user === 'manager' ? <div className="col-1 edit-delete">
               <FontAwesomeIcon id="edit-btn" icon={faEdit} size="1x" title="Edit" onClick={this.editMatch}/>
-              <FontAwesomeIcon id="delete-btn" icon={faTrashAlt} size="1x" title="Delete" onClick={this.deleteMatch}/>
+              {/*<FontAwesomeIcon id="delete-btn" icon={faTrashAlt} size="1x" title="Delete" onClick={this.deleteMatch}/>*/}
               </div> : null}
             </div>
           </div>
