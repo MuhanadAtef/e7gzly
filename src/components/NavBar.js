@@ -8,7 +8,7 @@ const USERNAME_MAX_LENGTH = 50;
 
 class NavBar extends Component {
   state = {
-    user: 0, // 0 for Guest, 1 for Customer, 2 for EFA manager, 4 for Adminstrator
+    user: 'guest', // guest, fan, manager, admin
     sign: false,  // Open sign up modal
     login: false, // Open login modal
   };
@@ -32,6 +32,11 @@ class NavBar extends Component {
   signOut = () => {
     console.log("sign out");
   };
+
+  constructor(props) {
+    super(props)
+    this.setState({user: localStorage.getItem('role') !== null ? localStorage.getItem('role') : 'guest'})
+  }
 
   render() {
     const login = this.state.login;

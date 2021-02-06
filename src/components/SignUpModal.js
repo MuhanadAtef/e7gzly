@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-responsive-modal";
@@ -70,7 +71,6 @@ class SignUpModal extends Component {
   // Request to sign up
   signUp = e => {
     e.preventDefault();
-    console.log(e.target.username.value);
     this.setState(
       {
         registrationInfo: {
@@ -91,7 +91,6 @@ class SignUpModal extends Component {
         var birthDate = new Date(this.state.registrationInfo.birthDate);
         var currentDate = new Date();
         var age = new Date(currentDate - birthDate).getFullYear();
-        console.log(age);
         if (
           this.state.registrationInfo.password !==
           this.state.registrationInfo.confirmPassword
@@ -99,8 +98,36 @@ class SignUpModal extends Component {
           alert("Password and confirm password doesn't match");
         } else if (age - 1970 < 16) {
           alert("You must be (+16) to create an account");
+        } else {
+          axios
+            .post("/account/registration/", {
+              username: e.target.username.value,
+              email: e.target.email.value,
+              password: e.target.password.value,
+              first_name: e.target.firstName.value,
+              last_name: e.target.lastName.value,
+              birthdate: e.target.birthDate.value,
+              gender: e.target.gender.value,
+              city: e.target.city.value,
+              address:
+                e.target.address.value !== "" ? e.target.address.value : null,
+              role: e.target.role.value,
+            })
+            .then(response => {
+              localStorage.setItem('token', response.data.token)
+              localStorage.setItem('role', response.data.role)
+            })
+            .catch(error => {
+              var errorData = error.response.data;
+              var errorMsg = "";
+              for (var key in errorData) {
+                if (errorData.hasOwnProperty(key)) {
+                  errorMsg += key + ": " + errorData[key] + "\n";
+                }
+              }
+              alert(errorMsg);
+            });
         }
-        console.log(this.state.registrationInfo);
       }
     );
   };
@@ -128,7 +155,11 @@ class SignUpModal extends Component {
 
   render() {
     return (
-      <Modal open={this.props.openSignModal} onClose={this.props.closeSignModal} center>
+      <Modal
+        open={this.props.openSignModal}
+        onClose={this.props.closeSignModal}
+        center
+      >
         <div className="modal-sign-body">
           <div className="modal-title">
             <h2>Sign Up</h2>
