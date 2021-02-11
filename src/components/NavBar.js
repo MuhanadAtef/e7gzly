@@ -71,7 +71,7 @@ class NavBar extends Component {
               {user === 'manager' ? <a href="/"> Add New Match </a> : null}
               {user === 'manager' ? <a href="/"> Add New Stadium </a> : null}
               {user === 'admin' ? (
-                <a href="/"> Approve/Remove Users </a>
+                <a href="/admin"> Approve/Remove Users </a>
               ) : null}
               {user !== 'guest' ? (
                 <button className="sign-in-up-buttons" onClick={this.signOut}>
