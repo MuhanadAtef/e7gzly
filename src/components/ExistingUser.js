@@ -1,7 +1,8 @@
 import React from 'react'
 import { BsFillPersonDashFill } from "react-icons/bs";
 import Swal from 'sweetalert2'
-function ExistingUser({users}) {
+import { authAxios } from "./AxiosConfig";
+function ExistingUser({ users }) {
 
     const [usersToShow, setUsers] = React.useState(users);
 
@@ -9,35 +10,48 @@ function ExistingUser({users}) {
         setUsers(users);
     }, [users])
 
-    function handleRemove(id,name) {
+    function handleRemove(id, name) {
         Swal.fire({
-            title: 'Are you sure you want to remove '+name+'?',
+            title: 'Are you sure you want to remove ' + name + '?',
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire(
-                'Deleted!',
-                name+' has been removed.',
-                'success'
-              )
-              
-              //here send the requesst to the backend
+                authAxios
+                    .delete("/users/", {
+                        params: {
+                            user: id
+                        },
+                    })
+                    .then(response => {
+                        Swal.fire(
+                            'Deleted!',
+                            name + ' has been removed.',
+                            'success'
+                        )
+                        const removedArr = [...usersToShow].filter(user => user.id !== id);
+                        setUsers(removedArr);
+                    }).catch(error => {
+                        var errorMsg = error.response.data;
+                        Swal.fire(
+                            'Failed!',
+                            errorMsg,
+                            'error'
+                        )
+                    });
 
-              const removedArr = [...usersToShow].filter(user => user.id !== id);
-              setUsers(removedArr);
             }
-          })
+        })
 
-      };
+    };
 
     const list = usersToShow.map(user =>
         <li key={user.id}>
-            <div className='admindashboard-existing-user-container' onClick={() => handleRemove(user.id,user.name)}>
+            <div className='admindashboard-existing-user-container' onClick={() => handleRemove(user.id, user.name)}>
                 <div className='admindashboard-user'>
                     <div className='admindashboard-username'>{user.name}</div>
                     <div className='admindashboard-authority'>{user.Authority}</div>
@@ -46,7 +60,7 @@ function ExistingUser({users}) {
             </div>
         </li>);
 
-        
+
     return (
         <div>
             <ul>

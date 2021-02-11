@@ -6,223 +6,101 @@ import Pagination from "react-pagination-js";
 import "react-pagination-js/dist/styles.css"; // import css
 // import 'react-tabs/style/react-tabs.css';
 import "./AdminDashboard.css";
+import { authAxios } from "./AxiosConfig";
 class AdminDashboard extends Component {
+    fetchData = () => {
+        //users to be approved
+        if (this.state.activeTab === 0) {
+            authAxios
+                .get("/users/", {
+                    params: {
+                        users_per_page: this.state.resultsPerPage,
+                        page_number: this.state.currentPage,
+                        unauthorized: true
+                    },
+                })
+                .then(response => {
+                    var count = JSON.parse(JSON.stringify(response.data.count))
+                    var usersArray = JSON.parse(JSON.stringify(response.data.users));
+                    console.log(response)
+                    var users = [];
+                    for (var i = 0; i < usersArray.length; i++) {
+                        var user = {
+                            id: usersArray[i].username,
+                            name: usersArray[i].first_name + ' ' + usersArray[i].last_name,
+                            Authority: usersArray[i].role,
+                        };
+                        users.push(user);
+                    }
+                    // console.log(usersArray);
+                    this.setState({
+                        usersToBeApproved: users,
+                        usersToBeApprovedTotalSize:count
+                    });
+                });
+        }
+        //All existing users
+        else {
+            authAxios
+                .get("/users/", {
+                    params: {
+                        users_per_page: this.state.resultsPerPage,
+                        page_number: this.state.currentPage,
+                        unauthorized: false
+                    },
+                })
+                .then(response => {
+                    var count = JSON.parse(JSON.stringify(response.data.count))
+                    var existingUsersArray = JSON.parse(JSON.stringify(response.data.users));
+                    console.log(response)
+                    var existingUsers = [];
+                    for (var i = 0; i < existingUsersArray.length; i++) {
+                        var user = {
+                            id: existingUsersArray[i].username,
+                            name: existingUsersArray[i].first_name + ' ' + existingUsersArray[i].last_name,
+                            Authority: existingUsersArray[i].role,
+                        };
+                        existingUsers.push(user);
+                    }
+                    // console.log(existingUsersArray);
+                    this.setState({
+                        existingUsers: existingUsers,
+                        existingUsersTotalSize: count
+                    });
+                });
+        }
+    };
+
+    componentDidMount() {
+        this.fetchData();
+    }
+
     constructor(props) {
         super(props)
-
         this.state = {
             currentPage: 1,
-            usersToBeApproved: [
-                {
-                    id: 1,
-                    name: 'Bruce Wayne',
-                    Authority: 'Fan',
-                },
-                {
-                    id: 2,
-                    name: 'Clark',
-                    Authority: 'Manager',
-                },
-                {
-                    id: 3,
-                    name: 'Diana',
-                    Authority: 'Fan',
-                }, {
-                    id: 4,
-                    name: 'Bruce',
-                    Authority: 'Fan',
-                },
-                {
-                    id: 5,
-                    name: 'Clark',
-                    Authority: 'Fan',
-                },
-                {
-                    id: 6,
-                    name: 'Diana',
-                    Authority: 'Fan',
-                }, {
-                    id: 7,
-                    name: 'Bruce',
-                    Authority: 'Fan',
-                },
-                {
-                    id: 8,
-                    name: 'Clark',
-                    Authority: 'Fan',
-                },
-                {
-                    id: 9,
-                    name: 'Diana',
-                    Authority: 'Fan',
-                }
-            ],
-            existingUsers: [
-                {
-                    id: 1,
-                    name: 'Bruce Wayne',
-                    Authority: 'Fan',
-                },
-                {
-                    id: 2,
-                    name: 'Clark',
-                    Authority: 'Manager',
-                },
-                {
-                    id: 3,
-                    name: 'Diana',
-                    Authority: 'Fan',
-                }, {
-                    id: 4,
-                    name: 'Bruce',
-                    Authority: 'Fan',
-                },
-                {
-                    id: 5,
-                    name: 'Clark',
-                    Authority: 'Fan',
-                },
-                {
-                    id: 6,
-                    name: 'Diana',
-                    Authority: 'Fan',
-                }, {
-                    id: 7,
-                    name: 'Bruce',
-                    Authority: 'Fan',
-                },
-                {
-                    id: 8,
-                    name: 'Clark',
-                    Authority: 'Fan',
-                },
-                {
-                    id: 9,
-                    name: 'Diana',
-                    Authority: 'Fan',
-                }
-            ]
+            resultsPerPage: 5,
+            usersToBeApproved: [],
+            existingUsers: [],
+            activeTab: 0,
+            usersToBeApprovedTotalSize: 10,
+            existingUsersTotalSize: 10
         }
     }
     changeCurrentPage = numPage => {
-        if (numPage == 2) {
-            this.setState({
-                currentPage: numPage, usersToBeApproved: [
-                    {
-                        id: 1,
-                        name: 'Mahmoud Mohamed',
-                        Authority: 'Fan',
-                    }
-                ], existingUsers: [
-                    {
-                        id: 1,
-                        name: 'Ibrahim Wayne',
-                        Authority: 'Fan',
-                    }
-                ]
-            });
-        }
-        else {
-            this.setState({
-                currentPage: numPage, usersToBeApproved: [
-                    {
-                        id: 1,
-                        name: 'Bruce Wayne',
-                        Authority: 'Fan',
-                    },
-                    {
-                        id: 2,
-                        name: 'Clark',
-                        Authority: 'Manager',
-                    },
-                    {
-                        id: 3,
-                        name: 'Diana',
-                        Authority: 'Fan',
-                    }, {
-                        id: 4,
-                        name: 'Bruce',
-                        Authority: 'Fan',
-                    },
-                    {
-                        id: 5,
-                        name: 'Clark',
-                        Authority: 'Fan',
-                    },
-                    {
-                        id: 6,
-                        name: 'Diana',
-                        Authority: 'Fan',
-                    }, {
-                        id: 7,
-                        name: 'Bruce',
-                        Authority: 'Fan',
-                    },
-                    {
-                        id: 8,
-                        name: 'Clark',
-                        Authority: 'Fan',
-                    },
-                    {
-                        id: 9,
-                        name: 'Diana',
-                        Authority: 'Fan',
-                    }
-                ], existingUsers: [
-                    {
-                        id: 1,
-                        name: 'Bruce Wayne',
-                        Authority: 'Fan',
-                    },
-                    {
-                        id: 2,
-                        name: 'Clark',
-                        Authority: 'Manager',
-                    },
-                    {
-                        id: 3,
-                        name: 'Diana',
-                        Authority: 'Fan',
-                    }, {
-                        id: 4,
-                        name: 'Bruce',
-                        Authority: 'Fan',
-                    },
-                    {
-                        id: 5,
-                        name: 'Clark',
-                        Authority: 'Fan',
-                    },
-                    {
-                        id: 6,
-                        name: 'Diana',
-                        Authority: 'Fan',
-                    }, {
-                        id: 7,
-                        name: 'Bruce',
-                        Authority: 'Fan',
-                    },
-                    {
-                        id: 8,
-                        name: 'Clark',
-                        Authority: 'Fan',
-                    },
-                    {
-                        id: 9,
-                        name: 'Diana',
-                        Authority: 'Fan',
-                    }
-                ]
-            })
-        };
-        //fetch a data
-        //or update a query to get data
+        this.setState(
+            {
+                currentPage: numPage
+            }, () => this.fetchData());
     };
     render() {
         return (
             <div className='AdminDashboard'>
                 <div className='wrapper'>
-                    <Tabs>
+                    <Tabs onSelect={(index) => this.setState({
+                        activeTab: index,
+                        currentPage: 1
+                    }, () => this.fetchData())}>
                         <TabList>
                             <Tab>Users Requests</Tab>
                             <Tab>Users</Tab>
@@ -232,8 +110,8 @@ class AdminDashboard extends Component {
                                 <UserToBeApproved users={this.state.usersToBeApproved}  ></UserToBeApproved>
                                 <Pagination
                                     currentPage={this.state.currentPage}
-                                    totalSize={100}
-                                    sizePerPage={10}
+                                    totalSize={this.state.usersToBeApprovedTotalSize}
+                                    sizePerPage={this.state.resultsPerPage}
                                     changeCurrentPage={this.changeCurrentPage}
                                     theme="bootstrap"
                                 />
@@ -244,8 +122,8 @@ class AdminDashboard extends Component {
                                 <ExistingUser users={this.state.existingUsers} ></ExistingUser>
                                 <Pagination
                                     currentPage={this.state.currentPage}
-                                    totalSize={100}
-                                    sizePerPage={10}
+                                    totalSize={this.state.existingUsersTotalSize}
+                                    sizePerPage={this.state.resultsPerPage}
                                     changeCurrentPage={this.changeCurrentPage}
                                     theme="bootstrap"
                                 />
