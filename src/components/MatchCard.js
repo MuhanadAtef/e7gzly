@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlagCheckered, faMale, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.css";
 import "./MatchCard.css";
+import history from './history';
 
 const TEAMS = {
   "al ahly sc": require("../assets/teams/al ahly sc.png").default,
@@ -43,6 +44,7 @@ class MatchCard extends Component {
 
   reserveMatch = () => {
       console.log("Reserve Match");
+      history.push(`/match:${this.props.match.id}`) 
   }
 
   editMatch = (e) => {
