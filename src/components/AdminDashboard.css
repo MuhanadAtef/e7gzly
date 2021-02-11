@@ -1,5 +1,13 @@
 .AdminDashboard{
-    background-image: linear-gradient(160deg,#ef00d7 0,rgba(239,0,215,.9) 5%,rgba(72,0,236,.5) 80%,rgba(60,0,146,.5) 100%);
+  background-image: url("/src/assets/admin.jpg");
+  /* transform: scale(1.1); */
+  background-repeat: no-repeat; 
+  background-position: center center;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
     display: flex;
 }
 .wrapper{
@@ -72,7 +80,8 @@ ul,li{
 .react-tabs {
     -webkit-tap-highlight-color: transparent;
     display:flex;
-    align-items:stretch
+    align-items:stretch;
+    flex-direction: column;
   }
   
   .react-tabs__tab-list {
