@@ -3,6 +3,7 @@ import { unAuthAxios } from "./AxiosConfig";
 import "./ModalStyle.css";
 import Modal from "react-responsive-modal";
 import "bootstrap/dist/css/bootstrap.css";
+import Swal from 'sweetalert2'
 
 class LoginModal extends Component {
   state = {
@@ -22,23 +23,21 @@ class LoginModal extends Component {
       },
       () => {
         unAuthAxios.post("/account/login/", {
-            username: e.target.username.value,
-            password: e.target.password.value
-          })
+          username: e.target.username.value,
+          password: e.target.password.value
+        })
           .then(response => {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("role", response.data.role);
             window.location.reload();
           })
           .catch(error => {
-            var errorData = error.response.data;
-            var errorMsg = "";
-            for (var key in errorData) {
-              if (errorData.hasOwnProperty(key)) {
-                errorMsg += key + ": " + errorData[key] + "\n";
-              }
-            }
-            alert(errorMsg);
+            var errorMsg = error.response.data;
+            Swal.fire(
+              'Failed!',
+              errorMsg,
+              'error'
+            )
           });
       }
     );

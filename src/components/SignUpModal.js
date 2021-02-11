@@ -5,6 +5,7 @@ import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-responsive-modal";
 import "bootstrap/dist/css/bootstrap.css";
 import "./ModalStyle.css";
+import Swal from 'sweetalert2'
 
 const CITIES = [
   { key: "cairo", value: "Cairo" },
@@ -100,22 +101,33 @@ class SignUpModal extends Component {
           alert("You must be (+16) to create an account");
         } else {
           unAuthAxios.post("/account/registration/", {
-              username: e.target.username.value,
-              email: e.target.email.value,
-              password: e.target.password.value,
-              first_name: e.target.firstName.value,
-              last_name: e.target.lastName.value,
-              birthdate: e.target.birthDate.value,
-              gender: e.target.gender.value,
-              city: e.target.city.value,
-              address:
-                e.target.address.value !== "" ? e.target.address.value : null,
-              role: e.target.role.value,
-            })
+            username: e.target.username.value,
+            email: e.target.email.value,
+            password: e.target.password.value,
+            first_name: e.target.firstName.value,
+            last_name: e.target.lastName.value,
+            birthdate: e.target.birthDate.value,
+            gender: e.target.gender.value,
+            city: e.target.city.value,
+            address:
+              e.target.address.value !== "" ? e.target.address.value : null,
+            role: e.target.role.value,
+          })
             .then(response => {
               localStorage.setItem('token', response.data.token)
               localStorage.setItem('role', response.data.role)
-              window.location.reload();
+              Swal.fire({
+                icon: 'success',
+                title:'Account Created Successfully',
+                showConfirmButton: false,
+                timer: 1500
+              }
+              ).then((result) => {
+                if (result.isDismissed){
+                  window.location.reload()
+                }
+              })
+              
             })
             .catch(error => {
               var errorData = error.response.data;
@@ -125,7 +137,11 @@ class SignUpModal extends Component {
                   errorMsg += key + ": " + errorData[key] + "\n";
                 }
               }
-              alert(errorMsg);
+              Swal.fire(
+                'Failed!',
+                errorMsg,
+                'error'
+              )
             });
         }
       }
