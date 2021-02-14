@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import SeatPicker from 'react-seat-picker'
 import "./MatchReservation.css";
 import MatchCard from "./MatchCard";
-import { authAxios, unAuthAxios } from "./AxiosConfig";
+import { authAxios, unAuthAxios, apiUrl } from "./AxiosConfig";
+// import { WebSocket } from "websocket";
 import Swal from 'sweetalert2'
 class MatchReservation extends Component {
 
@@ -10,9 +11,33 @@ class MatchReservation extends Component {
   constructor(props) {
     super(props)
 
+    // this.eventSource = new EventSource(apiUrl+"match/reservations");
+    this.client = null;
+    const user = localStorage.getItem('role') !== null ? localStorage.getItem('role') : 'guest' 
+    if (user === 'guest')
+    {
+      this.state = {
+        loading: false,
+        selectedSeat: -1,
+        maxSeats: 0,
+        rows: [],
+        match: {
+          id: 1,
+          time: Date().toLocaleString(),
+          home: "Home",
+          away: "Away",
+          stadium: "Stadium",
+          referee: "Ref",
+          lineman1: 1,
+          lineman2: 1
+        }
+      }
+    }
+    else {
     this.state = {
       loading: false,
       selectedSeat: -1,
+      maxSeats: 1,
       rows: [],
       match: {
         id: 1,
@@ -25,11 +50,33 @@ class MatchReservation extends Component {
         lineman2: 1
       }
     }
-
+  }
   }
 
   componentDidMount() {
     this.fetchData()
+    if (this.client != null) {
+      this.client.onmessage = (message) => {
+        console.log("gwa on message")
+        var reservedseats = []
+        console.log(JSON.parse(message.data))
+        var reserved = JSON.parse(message.data)
+        reservedseats.push(reserved.seat_id)
+        this.setState(
+          {
+            loading: true,
+          }, () => {
+            this.updateSeats(reservedseats)
+            this.setState({ loading: false });
+          });
+      };
+    }
+    // this.eventSource.addEventListener("reservation", e =>{
+    //   var reservedseats = []
+    //   console.log(JSON.parse(e.data))
+    //   reservedseats.push(JSON.parse(e.data))
+    //   this.updateSeats(reservedseats)
+    // });
   }
 
   generateSeats = (x, y) => {
@@ -38,7 +85,7 @@ class MatchReservation extends Component {
     var rows = []
     for (let i = 0; i < x; i++) {
       var row = []
-      var number = 1
+      var number = 0
       for (let j = 0; j < y; j++) {
         var seat = {
           id: (i + 10).toString(36).toUpperCase() + number,
@@ -60,7 +107,7 @@ class MatchReservation extends Component {
     this.setState(
       {
         loading: true
-      }, async() => {
+      }, async () => {
         if (this.state.selectedSeat === -1) {
           Swal.fire(
             'Please select a seat!',
@@ -79,16 +126,32 @@ class MatchReservation extends Component {
           }).then(async (result) => {
             if (result.isConfirmed) {
               console.log(this.state.match.id, this.state.selectedSeat)
-              const { value: creditCard } =  await Swal.fire({
+              const { value: creditCard } = await Swal.fire({
+                allowOutsideClick: false,
+                allowEscapeKey: false,
                 title: 'Please enter your payment details here',
                 html:
-                  '<input id="card" class="swal2-input" placeholder="Card number">' +
-                  '<input id="pin" class="swal2-input" placeholder="Pin number">',
+                  '<input id="card"  class="swal2-input" placeholder="Card number" >' +
+                  '<input id="pin"   class="swal2-input" placeholder="Pin number" >',
                 preConfirm: () => {
-                  return [
-                    document.getElementById('card').value,
-                    document.getElementById('pin').value
-                  ]
+                  // Validation
+                  if (document.getElementById('card').value && document.getElementById('pin').value) {
+                    let cardIsNum = /^\d+$/.test(document.getElementById('card').value);
+                    let pinIsNum = /^\d+$/.test(document.getElementById('pin').value);
+                    if (cardIsNum && pinIsNum) {
+                      return [
+                        document.getElementById('card').value,
+                        document.getElementById('pin').value
+                      ]
+                    }
+                    else {
+                      return null;
+                    }
+                  }
+                  else {
+                    return null;
+                  }
+
                 }
               });
 
@@ -100,7 +163,11 @@ class MatchReservation extends Component {
                     seat_id: this.state.selectedSeat
                   })
                   .then(response => {
-                    Swal.fire('Seats Reserved Successfully!', '', 'success')
+                    var reservationInfo = JSON.parse(JSON.stringify(response.data));
+                    Swal.fire('Seat Reserved Successfully!', 'Your ticket id is #' + reservationInfo.ticket_id, 'success')
+                    this.setState((prevState) => ({
+                      maxSeats: prevState.maxSeats + 1
+                    }));
                     var reservedseats = []
                     reservedseats.push(this.state.selectedSeat)
                     this.updateSeats(reservedseats)
@@ -121,7 +188,12 @@ class MatchReservation extends Component {
                       });
                   });
               }
-              else  {
+              else {
+                Swal.fire(
+                  'Please Enter a valid Credit card number and pin!',
+                  '',
+                  'error'
+                )
                 this.setState({
                   loading: false,
                 });
@@ -142,7 +214,13 @@ class MatchReservation extends Component {
   fetchData = () => {
     var thePath = window.location.href
     const match_id = thePath.substring(thePath.lastIndexOf(':') + 1)
-    console.log(match_id)
+    const urlWithoutHttp = apiUrl.substring(thePath.indexOf('/') + 2)
+    if (!this.client) {
+      this.client = new WebSocket('ws://' + urlWithoutHttp + 'match/reservations/' + match_id);
+      this.client.onopen = () => {
+        console.log('WebSocket Client Connected');
+      };
+    }
     unAuthAxios
       .get("/match/", {
         params: {
@@ -153,6 +231,7 @@ class MatchReservation extends Component {
         var matchInfo = JSON.parse(JSON.stringify(response.data));
         var date = matchInfo.date.replace('Z', '')
         date = date.replace('T', ' ')
+        console.log(matchInfo)
         var match = {
           id: matchInfo.match_id,
           time: date,
@@ -166,6 +245,7 @@ class MatchReservation extends Component {
         console.log(match)
         console.log(this.state.match)
         let reserved = matchInfo.seats.map(a => a.seat_id);
+        console.log(matchInfo.match_venue.vip_rows, matchInfo.match_venue.vip_seats_per_row)
         console.log(reserved)
         this.setState(
           {
@@ -181,7 +261,14 @@ class MatchReservation extends Component {
             this.setState({ loading: false });
           });
         console.log("fetchData finished")
-      })
+      }).catch(error => {
+        var errorMsg = error.response;
+        Swal.fire(
+          'Failed Loading Data From BackEnd!',
+          errorMsg,
+          'error'
+        )
+      });
 
 
   }
@@ -199,7 +286,7 @@ class MatchReservation extends Component {
         var a = seat.substr(0, 1)
         var b = seat.substr(1)
         var x = parseInt(a.toLowerCase().charCodeAt(0) - 97, 10)
-        var y = parseInt(b, 10) - 1
+        var y = parseInt(b, 10)
         console.log("here" + reserved)
         console.log(x, y)
         newSeats[x][y].isReserved = true
@@ -257,6 +344,7 @@ class MatchReservation extends Component {
 
 
   render() {
+    const user = localStorage.getItem('role') !== null ? localStorage.getItem('role') : 'guest' // Get the user role
     // const rows = [
     //   [
     //     { id: 1, number: 1, isSelected: false, tooltip: "Reserved by you" },
@@ -335,14 +423,17 @@ class MatchReservation extends Component {
             addSeatCallback={this.addSeatCallback}
             removeSeatCallback={this.removeSeatCallback}
             rows={this.state.rows}
-            maxReservableSeats={1}
+            maxReservableSeats={this.state.maxSeats}
             alpha
             visible
             selectedByDefault
             loading={loading}
             tooltipProps={{ multiline: true }}
           />
-          <button type="button" className="btn btn-success" onClick={this.reserve}>Reserve</button>
+          {user !== 'guest' ? (
+            <button type="button" className="btn btn-success" onClick={this.reserve}>Reserve</button>
+          ) : null}
+
         </div>
       </div>
     );

@@ -98,6 +98,9 @@
   cursor: pointer;
   background-color: #4CAF50;
 }
+.seat--north {
+  cursor: pointer;
+}
 .seat--reserved {
   cursor: not-allowed;
   background-color: #E0E0E0;
