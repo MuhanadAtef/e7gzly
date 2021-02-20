@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const token = localStorage.getItem("token");
-const apiUrl = "http://9021d9a4e783.ngrok.io/";
+const apiUrl = "http://ec0bb1f12fd0.ngrok.io/";
 
 // For non-authorized requests
 const unAuthAxios = axios.create({

@@ -8,7 +8,7 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-    display: flex;
+  display: flex;
 }
 .wrapper{
     padding: 5rem;

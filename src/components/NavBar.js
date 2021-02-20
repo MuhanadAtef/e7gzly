@@ -51,7 +51,7 @@ class NavBar extends Component {
             <div className="links">
               <a href="/"> Home </a>
               {user !== 'guest' ? (
-                <a href="/"> Profile </a>
+                <a href="/profile"> Profile </a>
               ) : (
                 <>
                   <button
@@ -68,8 +68,8 @@ class NavBar extends Component {
                   </button>
                 </>
               )}
-              {user === 'manager' ? <a href="/"> Add New Match </a> : null}
-              {user === 'manager' ? <a href="/"> Add New Stadium </a> : null}
+              {((user === 'manager')||(user==='admin'))? <a href="/newmatch:0"> Add New Match </a> : null}
+              {((user === 'manager')||(user==='admin'))? <a href="/newstadium"> Add New Stadium </a> : null}
               {user === 'admin' ? (
                 <a href="/admin"> Approve/Remove Users </a>
               ) : null}

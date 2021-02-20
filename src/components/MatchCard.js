@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlagCheckered, faMale, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.css";
 import "./MatchCard.css";
+import {authAxios} from "./AxiosConfig";
+import Swal from 'sweetalert2';
+
 import history from './history';
 
 const TEAMS = {
@@ -49,9 +52,33 @@ class MatchCard extends Component {
 
   editMatch = (e) => {
     e.stopPropagation();
-    console.log("Edit Match");
+    history.push(`/newmatch:${this.props.match.id}`)
   }
+  deleteResrvation=(e)=>{
+    Swal.fire({
+      title: 'Do you want to delete your reservation?',
+      showDenyButton: true,
+      confirmButtonText: `Delete`,
+      denyButtonText: `Cancel`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        authAxios.delete("reservations/", {   
+          params:{
+            id:this.props.ticket_id
+          }
+      })
+      .then(response => {    
+       console.log(response) 
+       Swal.fire("Delete reservation successfully ", '', 'success')
+       this.props.fetchReservationsData()
+      });
+      } else if (result.isDenied) {
+        Swal.fire("enjoy your match", '', 'info')
+      }
+    })
 
+  }
 
   render() {
     const user = localStorage.getItem('role') !== null ? localStorage.getItem('role') : 'guest' // Get the user role
@@ -60,8 +87,9 @@ class MatchCard extends Component {
     var awayTeam = TEAMS[this.props.match.away];
     return (
         <>
-          <div className="container match-card" onClick={this.reserveMatch}>
+          <div className="container match-card" onClick={(this.props.seat_id==null)? this.reserveMatch:null }>
             <div className="row justify-content-md-center match-card-row">
+              { this.props.seat_id!=null ?<h2 className="col-md">{this.props.seat_id}</h2>: null}
               <div className="col-md">
                 <h5>Home</h5>
                 <img src={homeTeam} alt="Home Team" height="70px"></img>
@@ -81,9 +109,12 @@ class MatchCard extends Component {
                 <img src={awayTeam} alt="Away Team" height="70px"></img>
                 <label className="team-name">{this.props.match.away}</label>
               </div>
-              {user === 'manager' ? <div className="col-1 edit-delete">
+              {(((user === 'manager')|| (user==='admin')) && (this.props.seat_id== null))? <div className="col-1 edit-delete">
               <FontAwesomeIcon id="edit-btn" icon={faEdit} size="1x" title="Edit" onClick={this.editMatch}/>
-              {/*<FontAwesomeIcon id="delete-btn" icon={faTrashAlt} size="1x" title="Delete" onClick={this.deleteMatch}/>*/}
+              <FontAwesomeIcon id="delete-btn" icon={faTrashAlt} size="1x" title="Delete" onClick={this.deleteMatch}/>
+              </div> : null}
+              {(this.props.seat_id != null)? <div className="col-1 edit-delete">
+              <FontAwesomeIcon id="delete-btn" icon={faTrashAlt} size="1x" title="Delete" onClick={this.deleteResrvation}/>
               </div> : null}
             </div>
           </div>
