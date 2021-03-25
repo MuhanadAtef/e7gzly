@@ -111,7 +111,7 @@ class MatchCard extends Component {
               </div>
               {(((user === 'manager')|| (user==='admin')) && (this.props.seat_id== null))? <div className="col-1 edit-delete">
               <FontAwesomeIcon id="edit-btn" icon={faEdit} size="1x" title="Edit" onClick={this.editMatch}/>
-              <FontAwesomeIcon id="delete-btn" icon={faTrashAlt} size="1x" title="Delete" onClick={this.deleteMatch}/>
+              {/* <FontAwesomeIcon id="delete-btn" icon={faTrashAlt} size="1x" title="Delete" onClick={this.deleteMatch}/> */}
               </div> : null}
               {(this.props.seat_id != null)? <div className="col-1 edit-delete">
               <FontAwesomeIcon id="delete-btn" icon={faTrashAlt} size="1x" title="Delete" onClick={this.deleteResrvation}/>

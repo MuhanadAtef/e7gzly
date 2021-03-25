@@ -206,17 +206,6 @@ class UserProfile extends Component {
                             <div className="row" >
                                 <div className="d-inline col"></div>
                                 <div className="d-inline col d-flex justify-content-end">
-                                     <label for="first_name">first_name:</label>
-                                </div>
-                                <div className="d-inline col  d-flex justify-content-start"> 
-                                     <input type="text" name="first_name" value={this.state.first_name} onChange={this.handleChangefirst_name} ></input>                        
-                                </div>
-                                <div className="d-inline col"></div>
-                            </div>
-                            <br/>
-                            <div className="row" >
-                                <div className="d-inline col"></div>
-                                <div className="d-inline col d-flex justify-content-end">
                                       <label for="first_name">first_name:</label>
                                 </div>
                                 <div className="d-inline col  d-flex justify-content-start"> 
