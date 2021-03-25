@@ -1,10 +1,10 @@
 .options{
-    background-color:  #048197;
-    color: white;
+    background-color:  white;
+    color: black;
 
 }
 .option{
-  background-color:  #048197 ;
+  background-color:  white ;
 }
 .full-bg-size2 { 
     background-image: url("/src/assets/admin.jpg");
@@ -20,8 +20,8 @@
   }
   .inputfield{
 
-    background-color:  #048197;
-    color: white;
+    background-color:  white;
+    color: black;
   }
   .all {
     width: 100%;

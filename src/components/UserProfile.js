@@ -67,7 +67,7 @@ class UserProfile extends Component {
         authorized: false,
         tickets:[]
     };
-    fetchUserData = () => {
+    fetchUserData = () => {      
         authAxios
           .get("user/")
           .then(response => {
@@ -117,6 +117,11 @@ class UserProfile extends Component {
                     tickets:this.state.tickets.concat(ticket)
                 });
                }  
+          })
+          .catch(error=>{
+            Swal.fire('Failed!',"",
+            'error'
+          )
           });
       };
     componentDidMount() {
@@ -361,6 +366,8 @@ class UserProfile extends Component {
                             })}
                     </div>
                 </div>
+                <br/>
+                <br/>
             </div>
         </div>
         </>
