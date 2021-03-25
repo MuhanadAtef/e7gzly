@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// eslint-disable-next-line no-unused-vars
 import "bootstrap/dist/css/bootstrap.css";
 import "./MatchCard.css";
 import "./UserProfile.css"
@@ -7,11 +6,54 @@ import {authAxios} from "./AxiosConfig";
 import MatchCard from "./MatchCard";
 import Swal from 'sweetalert2';
 import ChangePass from "./ChangePass";
+const CITIES = [
+    { key: "cairo", value: "Cairo" },
+    { key: "alexandria", value: "Alexandria" },
+    { key: "giza", value: "Giza" },
+    { key: "shubra el-kheima", value: "Shubra El-Kheima" },
+    { key: "port said", value: "Port Said" },
+    { key: "suez", value: "Suez" },
+    { key: "luxor", value: "Luxor" },
+    { key: "al-mansura", value: "Al-Mansura" },
+    { key: "el-mahalla el-kubra", value: "El-Mahalla El-Kubra" },
+    { key: "tanta", value: "Tanta" },
+    { key: "asyut", value: "Asyut" },
+    { key: "ismailia", value: "Ismailia" },
+    { key: "fayyum", value: "Fayyum" },
+    { key: "zagazig", value: "Zagazig" },
+    { key: "aswan", value: "Aswan" },
+    { key: "damietta", value: "Damietta" },
+    { key: "damanhur", value: "Damanhur" },
+    { key: "al-minya", value: "Al-Minya" },
+    { key: "beni suef", value: "Beni Suef" },
+    { key: "qena", value: "Qena" },
+    { key: "sohag", value: "Sohag" },
+    { key: "hurghada", value: "Hurghada" },
+    { key: "6th of october city", value: "6th of October City" },
+    { key: "shibin el kom", value: "Shibin El Kom" },
+    { key: "banha", value: "Banha" },
+    { key: "kafr el-sheikh", value: "Kafr el-Sheikh" },
+    { key: "arish", value: "Arish" },
+    { key: "mallawi", value: "Mallawi" },
+    { key: "10th of ramadan city", value: "10th of Ramadan City" },
+    { key: "bilbais", value: "Bilbais" },
+    { key: "marsa matruh", value: "Marsa Matruh" },
+    { key: "idfu", value: "Idfu" },
+    { key: "mit ghamr", value: "Mit Ghamr" },
+    { key: "al-hamidiyya", value: "Al-Hamidiyya" },
+    { key: "desouk", value: "Desouk" },
+    { key: "qalyub", value: "Qalyub" },
+    { key: "abu kabir", value: "Abu Kabir" },
+    { key: "kafr el-dawwar", value: "Kafr el-Dawwar" },
+    { key: "girga", value: "Girga" },
+    { key: "akhmim", value: "Akhmim" },
+    { key: "matareya", value: "Matareya" },
+  ];
 const USERNAME_MAX_LENGTH = 50;
 class UserProfile extends Component {
     state = {
         
-        login: false, // Open login modal
+        changepassword: false, // Open changepassword modal
         username: "",
         email: "",
         password: "",
@@ -107,6 +149,7 @@ class UserProfile extends Component {
         });
     }
     handleChangegender=({ target }) => {
+        
         this.setState({
             gender: target.value,            
         });
@@ -121,12 +164,12 @@ class UserProfile extends Component {
             address: target.value,           
         });
     }
-    openLoginModal = () => {
-        this.setState({ login: true });
+    openchangepasswordModal = () => {
+        this.setState({ changepassword: true });
       };
       
-    colseLoginModal = () => {
-        this.setState({ login: false });
+    colsechangepasswordModal = () => {
+        this.setState({ changepassword: false });
       };
     changUserData=(e)=>{
         e.preventDefault();
@@ -173,9 +216,8 @@ class UserProfile extends Component {
  
   render() {    
     return (
-       
-        <>
-        <div className="all ">
+    <>
+        <div className="allprofile ">
             <div className=" photo">
                 <div className='  justify-content-md-center match-card-row container-fluid'>
                     <div className="react-tabs ">
@@ -187,7 +229,7 @@ class UserProfile extends Component {
                                   <label for="username">username:</label>
                                 </div>
                                 <div className="d-inline col  d-flex justify-content-start"> 
-                                   <h5>{this.state.username}</h5>                         
+                                   <h4>{this.state.username}</h4>                         
                                 </div>
                                 <div className="d-inline col"></div>
                             </div>
@@ -197,8 +239,8 @@ class UserProfile extends Component {
                                 <div className="d-inline col d-flex justify-content-end">
                                     <label for="email">email:</label>
                                 </div>
-                                <div className="d-inline col  d-flex justify-content-start"> 
-                                    <input type="text" name="email" value={this.state.email}  ></input>                          
+                                <div className="d-inline col  d-flex justify-content-start">                                   
+                                    <h4>{this.state.email}</h4>                             
                                 </div>
                                 <div className="d-inline col"></div>
                             </div>
@@ -208,19 +250,19 @@ class UserProfile extends Component {
                                 <div className="d-inline col d-flex justify-content-end">
                                       <label for="first_name">first_name:</label>
                                 </div>
-                                <div className="d-inline col  d-flex justify-content-start"> 
-                                       <input type="text" name="first_name" value={this.state.first_name} onChange={this.handleChangefirst_name} ></input>                      
+                                <div className="d-inline col  d-flex justify-content-start form-group"> 
+                                    <input className="form-input" id="username-sign" type="text" name="first_name" value={this.state.first_name} onChange={this.handleChangefirst_name} />
                                 </div>
                                 <div className="d-inline col"></div>
                             </div>                                        
                             <br/>
                             <div className="row" >
                                 <div className="d-inline col"></div>
-                                <div className="d-inline col d-flex justify-content-end">
+                                <div className="d-inline col d-flex justify-content-end ">
                                 <label for="last_name">last_name:</label> 
                                 </div>
-                                <div className="d-inline col  d-flex justify-content-start"> 
-                                <input type="text" name="last_name" value={this.state.last_name} onChange={this.handleChangelast_name}></input>
+                                <div className="d-inline col  d-flex justify-content-start form-group"> 
+                                  <input className="form-input" id="username-sign" type="text" name="last_name" value={this.state.last_name} onChange={this.handleChangelast_name} />
                                 </div>
                                 <div className="d-inline col"></div>
                             </div>     
@@ -233,20 +275,28 @@ class UserProfile extends Component {
                                 <label for="birthdate">birthdate:</label>
                                 </div>
                                 <div className="d-inline col  d-flex justify-content-start"> 
-                                <input type="text" name="birthdate" value={this.state.birthdate} onChange={this.handleChangebirthdate}></input>      
+                                <div className="form-group">
+                                <input className="form-input" type="date" id="date-input" name="birthDate" value={this.state.birthdate} onChange={this.handleChangebirthdate} required={true} min="1900-01-01"></input>
+                                </div>     
                                 </div>
                                 <div className="d-inline col"></div>
                             </div>      
-                          
-                           
+
                             <br/>
                             <div className="row" >
                                 <div className="d-inline col"></div>
                                 <div className="d-inline col d-flex justify-content-end">
-                                <label for="gender">gender:</label>
+                                    <label for="gender">gender:</label>
                                 </div>
-                                <div className="d-inline col  d-flex justify-content-start"> 
-                                <input type="text" name="gender" value={this.state.gender} onChange={this.handleChangegender}></input>
+                                <div className="d-inline col  d-flex justify-content-start">             
+                                    <div  onChange={this.handleChangegender} id="htmlFor" className="form-check form-check-inline">
+                                        <input checked={this.state.gender === "male"} className="form-check-input"id="male-radio" type="radio" name="gender" value="male" />
+                                        <label className="form-check-label" htmlFor="male-radio">Male</label>
+                                        <input checked={this.state.gender === "female"} className="form-check-input" id="female-radio" type="radio" name="gender" value="female" />
+                                        <label className="form-check-label" htmlFor="female-radio">Female</label>
+                                        <input checked={this.state.gender === "other"} className="form-check-input" id="other-radio" type="radio" name="gender" value="other" />
+                                        <label className="form-check-label" htmlFor="other-radio">Other</label>
+                                    </div>
                                 </div>
                                 <div className="d-inline col"></div>
                             </div>  
@@ -256,10 +306,15 @@ class UserProfile extends Component {
                             <div className="row" >
                                 <div className="d-inline col"></div>
                                 <div className="d-inline col d-flex justify-content-end">
-                                <label for="city">city:</label>
+                                    <label for="city">city:</label>
                                 </div>
                                 <div className="d-inline col  d-flex justify-content-start"> 
-                                <input type="text" name="city" value={this.state.city} onChange={this.handleChangecity}></input>
+                                    <div className="form-group">
+                                    <select value={this.state.city} onChange={this.handleChangecity} name="city" id="city" className="form-input">{CITIES.map(city => (
+                                        <option key={city.key} value={city.key}>{city.value}</option>
+                                        ))};
+                                    </select>
+                                    </div>
                                 </div>
                                 <div className="d-inline col"></div>
                             </div>  
@@ -271,8 +326,9 @@ class UserProfile extends Component {
                                 <div className="d-inline col d-flex justify-content-end">
                                 <label for="address">address:</label>
                                 </div>
-                                <div className="d-inline col  d-flex justify-content-start"> 
-                                <input type="text" name="address" value={this.state.address} onChange={this.handleChangeaddress}></input>
+                               
+                                <div className="d-inline col  d-flex justify-content-start form-group"> 
+                                    <input className="form-input" id="username-sign" type="text" name="address" value={this.state.address} onChange={this.handleChangeaddress} />
                                 </div>
                                 <div className="d-inline col"></div>
                             </div>  
@@ -289,13 +345,13 @@ class UserProfile extends Component {
                                      <h6>To change your password click here</h6>
                                 </div>
                                 <div className="d-inline col  d-flex justify-content-start"> 
-                                      <button type="button" class=" btn-primary btn-sm" onClick={this.openLoginModal}>Change Password</button>
+                                      <button type="button" class=" btn-primary btn-sm" onClick={this.openchangepasswordModal}>Change Password</button>
                                 </div>
                                 <div className="d-inline col"></div>
                             </div>                                                      
                         </div>
                         <br/>
-                        <ChangePass openLoginModal={this.state.login} colseLoginModal={this.colseLoginModal} usernameMaxLength={USERNAME_MAX_LENGTH}/>
+                        <ChangePass openchangepasswordModal={this.state.changepassword} colsechangepasswordModal={this.colsechangepasswordModal} usernameMaxLength={USERNAME_MAX_LENGTH}/>
                     </div>
                     <div className="react-tabs ">
                         <h2>Your Reserved Tickets</h2>

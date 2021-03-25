@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// eslint-disable-next-line no-unused-vars
 import { faFlagCheckered, faMale} from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.css";
 import DateTimePicker from 'react-datetime-picker';
@@ -204,7 +203,7 @@ createMatch=(e)=>{
             return
         }
 
-    if(this.state.match_id === ""){    
+    if(this.state.match_id === "0"){    
       Swal.fire({
           title: 'Do you want to create this match?',
           showDenyButton: true,
