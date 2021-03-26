@@ -68,9 +68,13 @@ class NewStadium extends Component {
             })
             .then(response => {    
              console.log(response) 
-             Swal.fire("isa stadium created successfully ", '', 'success')
+             Swal.fire("Stadium created successfully ", '', 'success')
             
-            });
+            }).catch(error=>{
+                Swal.fire('Error happened please try again!',"",
+                'error'
+              )
+              });
             } else if (result.isDenied) {
               Swal.fire("The match hasn't been created", '', 'info')
             }

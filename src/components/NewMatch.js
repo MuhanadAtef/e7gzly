@@ -78,7 +78,6 @@ class NewMatch extends Component {
     });
 }
 handleChangeAway = ({ target }) => {
-    console.log(target.value)
     this.setState({
         
         selectedOptionAway: target.value,
@@ -127,6 +126,10 @@ fetchStadiums=()=>{
         stadiums:this.state.stadiums.concat(stadium)
     });
    }    
+  }).catch(error=>{
+    Swal.fire('Error happened please try again!',"",
+    'error'
+  )
   });
 }
 fetchData = () => {
@@ -225,9 +228,12 @@ createMatch=(e)=>{
       
           })
           .then(response => {    
-          console.log(response) 
-          Swal.fire("isa match created successfully ", '', 'success')
+          Swal.fire("Match created successfully ", '', 'success')
           
+          }).catch(error=>{
+            Swal.fire('Error happened please try again!',"",
+            'error'
+          )
           });
           } else if (result.isDenied) {
             Swal.fire("The match hasn't been created", '', 'info')
@@ -258,9 +264,12 @@ createMatch=(e)=>{
       
           })
           .then(response => {    
-          console.log(response) 
-          Swal.fire("isa match edited successfully ", '', 'success')
+          Swal.fire("Match edited successfully ", '', 'success')
           
+          }).catch(error=>{
+            Swal.fire('Error happened please try again!',"",
+            'error'
+          )
           });
           } else if (result.isDenied) {
             Swal.fire("The match hasn't been edited", '', 'info')

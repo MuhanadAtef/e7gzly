@@ -84,6 +84,10 @@ class UserProfile extends Component {
             role: response.data.role,
             authorized: response.data.authorized
           });
+          }).catch(error=>{
+            Swal.fire('Error happened please try again!',"",
+            'error'
+          )
           });
       };
       fetchReservationsData = () => {
@@ -119,7 +123,7 @@ class UserProfile extends Component {
                }  
           })
           .catch(error=>{
-            Swal.fire('Failed!',"",
+            Swal.fire('Error happened please try again!',"",
             'error'
           )
           });
@@ -210,7 +214,11 @@ class UserProfile extends Component {
              console.log(response) 
              Swal.fire("Profile edited successfully ", '', 'success')
              this.fetchUserData()
-            });
+            }).catch(error=>{
+                Swal.fire('Error happened please try again!',"",
+                'error'
+              )
+              });
             } else if (result.isDenied) {
               Swal.fire("no edit done", '', 'info')
             }
@@ -347,7 +355,7 @@ class UserProfile extends Component {
                              <div className="row" >
                                 <div className="d-inline col"></div>
                                 <div className="d-inline col d-flex justify-content-end">
-                                     <h6>To change your password click here</h6>
+                                     <h4>To change your password click here</h4>
                                 </div>
                                 <div className="d-inline col  d-flex justify-content-start"> 
                                       <button type="button" class=" btn-primary btn-sm" onClick={this.openchangepasswordModal}>Change Password</button>
