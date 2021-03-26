@@ -27,7 +27,7 @@ class ChangePass extends Component {
     })
       .then(response => {
         Swal.fire("Password changed successfully ", '', 'success')
-        this.props.colseLoginModal()
+        this.props.colsechangepasswordModal()
       })
       .catch(error => {
         var errorMsg = error.response.data.old_password;
@@ -72,14 +72,14 @@ handleChangeOldPass=({target})=>{
 }
   render() {
     return (
-      <Modal open={this.props.openLoginModal} onClose={this.props.colseLoginModal} center >
+      <Modal open={this.props.openchangepasswordModal} onClose={this.props.colsechangepasswordModal} center >
         <div className="modal-log-in-body">
           <div className="modal-title">
             <h2>Change Password</h2>
           </div>
-          <form className="contact-form login-form" onSubmit={this.ChangePass}>
+          <form className="contact-form changepassword-form" onSubmit={this.ChangePass}>
             <div className="form-group">
-              <label htmlFor="username-login" className="subtitle">Old Password:</label>
+              <label htmlFor="username-changepassword" className="subtitle">Old Password:</label>
               <input type="password" name="password" id="password-sign" className="form-input" onChange={this.handleChangeOldPass} autoComplete="off" required={true}/>
             </div>
             <div className="form-group">
@@ -91,7 +91,7 @@ handleChangeOldPass=({target})=>{
               <input type="password" name="confirmPassword" id="confirm-password"className="form-input" onChange={this.checkConfirmPassword}autoComplete="off"aria-required={true}required={true}/>
               {this.state.isPasswordMatch ? null : (<p id="password-error-msg">{" "}<FontAwesomeIcon icon={faTimesCircle} size="xs" />{" "}password does not match</p>)}
             </div>
-            <input className="btn btn-md btn-primary btn-center" id="login_btn" type="submit" value="Change"/>
+            <input className="btn btn-md btn-primary btn-center" id="changepassword_btn" type="submit" value="Change"/>
           </form>
         </div>
       </Modal>

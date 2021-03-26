@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// eslint-disable-next-line no-unused-vars
 import { faFlagCheckered, faMale} from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.css";
 import DateTimePicker from 'react-datetime-picker';
@@ -79,7 +78,6 @@ class NewMatch extends Component {
     });
 }
 handleChangeAway = ({ target }) => {
-    console.log(target.value)
     this.setState({
         
         selectedOptionAway: target.value,
@@ -128,6 +126,10 @@ fetchStadiums=()=>{
         stadiums:this.state.stadiums.concat(stadium)
     });
    }    
+  }).catch(error=>{
+    Swal.fire('Error happened please try again!',"",
+    'error'
+  )
   });
 }
 fetchData = () => {
@@ -204,7 +206,7 @@ createMatch=(e)=>{
             return
         }
 
-    if(this.state.match_id === ""){    
+    if(this.state.match_id === "0"){    
       Swal.fire({
           title: 'Do you want to create this match?',
           showDenyButton: true,
@@ -226,9 +228,12 @@ createMatch=(e)=>{
       
           })
           .then(response => {    
-          console.log(response) 
-          Swal.fire("isa match created successfully ", '', 'success')
+          Swal.fire("Match created successfully ", '', 'success')
           
+          }).catch(error=>{
+            Swal.fire('Error happened please try again!',"",
+            'error'
+          )
           });
           } else if (result.isDenied) {
             Swal.fire("The match hasn't been created", '', 'info')
@@ -259,9 +264,12 @@ createMatch=(e)=>{
       
           })
           .then(response => {    
-          console.log(response) 
-          Swal.fire("isa match edited successfully ", '', 'success')
+          Swal.fire("Match edited successfully ", '', 'success')
           
+          }).catch(error=>{
+            Swal.fire('Error happened please try again!',"",
+            'error'
+          )
           });
           } else if (result.isDenied) {
             Swal.fire("The match hasn't been edited", '', 'info')

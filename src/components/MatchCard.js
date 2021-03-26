@@ -72,6 +72,10 @@ class MatchCard extends Component {
        console.log(response) 
        Swal.fire("Delete reservation successfully ", '', 'success')
        this.props.fetchReservationsData()
+      }).catch(error=>{
+        Swal.fire('Error happened please try again!',"",
+        'error'
+      )
       });
       } else if (result.isDenied) {
         Swal.fire("enjoy your match", '', 'info')
