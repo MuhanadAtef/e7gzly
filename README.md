@@ -1,6 +1,6 @@
 # E7gzly
 ## Overview
-![assets/review.gif]
+![assets/overview.gif]
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
