@@ -1,6 +1,6 @@
 # E7gzly
 ## Overview
-![overview][/assets/overview.gif]
+![overview]("https://github.com/MuhanadAtef/e7gzly/blob/main/assets/overview.gif")
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
